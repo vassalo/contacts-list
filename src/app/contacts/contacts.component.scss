@@ -1,0 +1,53 @@
+div.container {
+  margin: auto;
+  max-width: 550px;
+  padding: 20px;
+  text-align: center;
+
+  > button {
+    margin-top: 20px;
+  }
+}
+
+mat-expansion-panel {
+  line-height: 32px;
+}
+
+div.info {
+  display: flex;
+}
+
+div.info-container {
+  height: 100%;
+  padding: 0 0 0 10px;
+}
+
+img {
+  background-size: cover;
+
+  &.mini-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+    margin-right: 16px;
+  }
+
+  &.avatar {
+    min-width: 90px;
+    max-width: 90px;
+    min-height: 90px;
+    max-height: 90px;
+    border-radius: 50px;
+  }
+}
+
+mat-form-field {
+  padding: 0 5px;
+  max-width: 45%;
+}
+
+@media (max-width: 425px) {
+  mat-form-field {
+    max-width: 85%;
+  }
+}
