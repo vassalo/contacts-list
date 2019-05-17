@@ -13,7 +13,7 @@
             {{ contact.nickname ? contact.nickname : 'Novo contato' }}
           </mat-panel-title>
           <mat-panel-description>
-            {{ contact.group }}
+            {{ getGroupName(contact.group) }}
           </mat-panel-description>
         </mat-expansion-panel-header>
 
@@ -55,7 +55,7 @@
               <mat-label>Grupo</mat-label>
               <mat-select [(ngModel)]="contact.group">
                 <mat-option [value]="null">Selecione</mat-option>
-                <mat-option *ngFor="let opt of groups" [value]="opt">{{ opt }}</mat-option>
+                <mat-option *ngFor="let g of groups" [value]="g.id">{{ g.name }}</mat-option>
               </mat-select>
             </mat-form-field>
 

@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {Contact} from './shared/contact';
 import {DomSanitizer} from '@angular/platform-browser';
-import {HttpClient} from '@angular/common/http';
 import {ContactService} from './shared/contact.service';
 
 @Component({
@@ -14,7 +13,7 @@ export class ContactsComponent {
   openedContact: number;
   loadingContacts = true;
   contacts: Contact[];
-  groups: any[];
+  groups = [];
 
   constructor(private sanitization: DomSanitizer, private contactService: ContactService) {
     this.contactService.getAll().subscribe(data => {
@@ -27,6 +26,18 @@ export class ContactsComponent {
     return this.sanitization.bypassSecurityTrustStyle(
       'url(' + (url || 'https://t3.ftcdn.net/jpg/00/64/67/52/240_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg') + ')'
     );
+  }
+
+  getGroupName(id: number) {
+    if (id === undefined) {
+      return undefined;
+    }
+
+    for (const g of this.groups) {
+      if (g.id === id) {
+        return g.name;
+      }
+    }
   }
 
   addContact() {
