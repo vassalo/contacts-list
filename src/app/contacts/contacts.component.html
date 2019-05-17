@@ -1,64 +1,73 @@
 <div class="container">
-  <mat-accordion>
-    <mat-expansion-panel *ngFor="let contact of contacts">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          {{ contact.nickname ? contact.nickname : 'Novo contato' }}
-        </mat-panel-title>
-        <mat-panel-description>
-          {{ contact.group }}
-        </mat-panel-description>
-      </mat-expansion-panel-header>
+  <ng-container *ngIf="loadingContacts">
+    <mat-spinner></mat-spinner>
+  </ng-container>
 
-      <div class="info">
-        <img class="avatar"
-             [style.background-image]="getProfilePic(contact.picture)"/>
+  <ng-container *ngIf="!loadingContacts">
+    <mat-card *ngIf="contacts.length === 0">Nenhum contato cadastrado!</mat-card>
 
-        <div class="info-container">
-          <mat-form-field appearance="standard">
-            <mat-label>Nome completo</mat-label>
-            <input matInput placeholder="José da Silva" [(ngModel)]="contact.fullname" required>
-            <mat-icon matSuffix>face</mat-icon>
-          </mat-form-field>
+    <mat-accordion *ngIf="contacts.length > 0">
+      <mat-expansion-panel *ngFor="let contact of contacts; let i = index" (opened)="openedContact = i" [expanded]="openedContact === i">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ contact.nickname ? contact.nickname : 'Novo contato' }}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{ contact.group }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
 
-          <mat-form-field appearance="standard">
-            <mat-label>Apelido</mat-label>
-            <input matInput placeholder="Zé" [(ngModel)]="contact.nickname" required>
-            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-          </mat-form-field>
+        <div class="info">
+          <img class="avatar" [style.background-image]="getProfilePic(contact.picture)"/>
 
-          <mat-form-field appearance="standard">
-            <mat-label>Celular</mat-label>
-            <input matInput placeholder="99999-1234" [(ngModel)]="contact.phone" required>
-            <mat-icon matSuffix>phone</mat-icon>
-          </mat-form-field>
+          <div class="info-container">
+            <mat-form-field appearance="standard">
+              <mat-label>Nome completo</mat-label>
+              <input matInput placeholder="José da Silva" [(ngModel)]="contact.fullname" required>
+              <mat-icon matSuffix>face</mat-icon>
+            </mat-form-field>
 
-          <mat-form-field appearance="standard">
-            <mat-label>E-mail</mat-label>
-            <input matInput placeholder="ze@gmail.com" [(ngModel)]="contact.email" required>
-            <mat-icon matSuffix>mail</mat-icon>
-          </mat-form-field>
+            <mat-form-field appearance="standard">
+              <mat-label>Apelido</mat-label>
+              <input matInput placeholder="Zé" [(ngModel)]="contact.nickname" required>
+              <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+            </mat-form-field>
 
-          <mat-form-field appearance="standard">
-            <mat-label>Foto</mat-label>
-            <input matInput placeholder="imgur.com/abcd73wyz" [(ngModel)]="contact.picture" required>
-            <mat-icon matSuffix>link</mat-icon>
-          </mat-form-field>
+            <mat-form-field appearance="standard">
+              <mat-label>Celular</mat-label>
+              <input matInput placeholder="99999-1234" [(ngModel)]="contact.phone" required>
+              <mat-icon matSuffix>phone</mat-icon>
+            </mat-form-field>
 
-          <mat-form-field appearance="standard">
-            <mat-label>Grupo</mat-label>
-            <mat-select [(ngModel)]="contact.group" required>
-              <mat-option *ngFor="let opt of groups" [value]="opt">{{ opt }}</mat-option>
-            </mat-select>
-          </mat-form-field>
+            <mat-form-field appearance="standard">
+              <mat-label>E-mail</mat-label>
+              <input matInput placeholder="ze@gmail.com" [(ngModel)]="contact.email" required>
+              <mat-icon matSuffix>mail</mat-icon>
+            </mat-form-field>
 
-          <button mat-stroked-button color="primary">Salvar</button>
+            <mat-form-field appearance="standard">
+              <mat-label>Foto</mat-label>
+              <input matInput placeholder="imgur.com/abcd73wyz" [(ngModel)]="contact.picture" required>
+              <mat-icon matSuffix>link</mat-icon>
+            </mat-form-field>
+
+            <mat-form-field appearance="standard">
+              <mat-label>Grupo</mat-label>
+              <mat-select [(ngModel)]="contact.group">
+                <mat-option [value]="null">Selecione</mat-option>
+                <mat-option *ngFor="let opt of groups" [value]="opt">{{ opt }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <button mat-stroked-button color="primary" (click)="saveContact(i)">Salvar</button>
+            <button mat-stroked-button color="warn" (click)="deleteContact(i)">Excluir</button>
+          </div>
         </div>
-      </div>
-    </mat-expansion-panel>
-  </mat-accordion>
+      </mat-expansion-panel>
+    </mat-accordion>
 
-  <button mat-mini-fab color="primary" (click)="addContact()">
-    <mat-icon>add</mat-icon>
-  </button>
+    <button mat-mini-fab color="primary" (click)="addContact()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </ng-container>
 </div>

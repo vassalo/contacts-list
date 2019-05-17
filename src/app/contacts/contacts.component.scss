@@ -9,12 +9,20 @@ div.container {
   }
 }
 
+mat-spinner {
+  margin: 50px auto 0 auto;
+}
+
 mat-expansion-panel {
   line-height: 32px;
 }
 
 div.info {
   display: flex;
+
+  button {
+    margin-right: 8px;
+  }
 }
 
 div.info-container {

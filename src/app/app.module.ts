@@ -5,10 +5,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {
   MatButtonModule,
-  MatButtonToggleModule, MatChipsModule,
+  MatButtonToggleModule, MatCardModule, MatChipsModule,
   MatExpansionModule, MatFormFieldModule, MatGridListModule,
   MatIconModule, MatInputModule,
-  MatMenuModule, MatSelectModule,
+  MatMenuModule, MatProgressSpinnerModule, MatSelectModule,
   MatToolbarModule
 } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -37,7 +37,9 @@ import {HttpClientModule} from '@angular/common/http';
     MatChipsModule,
     MatGridListModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatProgressSpinnerModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {Contact} from './shared/contact';
 import {DomSanitizer} from '@angular/platform-browser';
 import {HttpClient} from '@angular/common/http';
+import {ContactService} from './shared/contact.service';
 
 @Component({
   selector: 'app-contacts',
@@ -10,27 +11,41 @@ import {HttpClient} from '@angular/common/http';
 })
 export class ContactsComponent {
 
-  panelOpenState = false;
+  openedContact: number;
+  loadingContacts = true;
+  contacts: Contact[];
+  groups: any[];
 
-  contacts = [
-    new Contact('https://material.angular.io/assets/img/examples/shiba1.jpg', 'Matuto', 'Gabriel Barbosa', '666', 'gbp@ic.ufal.br', 'UFAL')
-  ];
-
-  groups = [
-    'UFAL',
-    'CSU'
-  ];
-
-  constructor(private sanitization: DomSanitizer, private http: HttpClient) {
-  }
-
-  addContact() {
-    this.contacts.push(new Contact());
+  constructor(private sanitization: DomSanitizer, private contactService: ContactService) {
+    this.contactService.getAll().subscribe(data => {
+      this.contacts = data;
+      this.loadingContacts = false;
+    });
   }
 
   getProfilePic(url) {
     return this.sanitization.bypassSecurityTrustStyle(
       'url(' + (url || 'https://t3.ftcdn.net/jpg/00/64/67/52/240_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg') + ')'
     );
+  }
+
+  addContact() {
+    this.contacts.push(new Contact());
+  }
+
+  saveContact(idx: number) {
+    this.contactService.save(this.contacts[idx]).subscribe(data => this.contacts[idx] = data, err => alert('Falha ao salvar contato'));
+  }
+
+  deleteContact(idx: number) {
+    if (this.contacts[idx].id === undefined) {
+      this.contacts.splice(idx, 1);
+    } else {
+      this.contactService.delete(this.contacts[idx])
+        .subscribe(data => {
+          this.contacts.splice(idx, 1);
+          this.openedContact = undefined;
+        }, err => alert('Falha ao deletar contato'));
+    }
   }
 }
